@@ -54,6 +54,8 @@ mkdir -p /root/restore
 DOMAINS=$(mysql powerdns -s -e "SELECT Name FROM domains;" | egrep -v "^Name|arpa")
 # Loop domains
 for DOMAIN in ${DOMAINS}; do
+  # Reset variable
+  NOTDELETING=""
   echo ""
   ECHOGREEN ${DOMAIN}
   # Query NS records @8.8.8.8 (Google DNS) and check how many records are returned
