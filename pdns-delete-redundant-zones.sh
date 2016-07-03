@@ -74,6 +74,7 @@ for DOMAIN in ${DOMAINS}; do
         ECHOCYAN "BOOYA"
         NOTDELETING="true"
       else
+        ECHOCYAN "BOO"
         NOTDELETING="false"
       fi
     done
