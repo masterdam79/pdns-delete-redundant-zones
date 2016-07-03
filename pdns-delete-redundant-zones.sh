@@ -95,6 +95,7 @@ for DOMAIN in ${DOMAINS}; do
     DOMAINID=$(mysql powerdns -s -e "SELECT id FROM domains WHERE name = \"${DOMAIN}\"" | egrep -v "^id")
     ECHOYELLOW "We're deleting the zone with ID ${DOMAINID} and its records"
     echo "${DOMAIN} - deleted because NS records didn't match local hostname" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
+    echo "# ${DOMAIN}" >> /root/${DATABASE}-${TIMESTAMP}-$0-action.sql
     ECHOSILVER "mysql powerdns -e \"DELETE FROM records WHERE domain_id = ${DOMAINID};\""
     echo "DELETE FROM records WHERE domain_id = ${DOMAINID};" >> /root/${DATABASE}-${TIMESTAMP}-$0-action.sql
     ECHOSILVER "mysql powerdns -e \"DELETE FROM domains WHERE id = ${DOMAINID};\""
