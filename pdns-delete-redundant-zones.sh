@@ -12,4 +12,8 @@ mysqldump ${DATABASE} > /root/${DATABASE}-${TIMESTAMP}-$0.sql
 DOMAINS=$(mysql powerdns -s -e "SELECT Name FROM domains;")
 for DOMAIN in ${DOMAINS}; do
   echo ${DOMAIN}
+  NSRECORDS=$(dig @8.8.8.8 ${DOMAIN} NS | grep ^${DOMAIN} | awk '{print $5}')
+  for NSRECORD in ${NSRECORDS}; do
+    echo ${NSRECORD::-1}
+  done
 done
