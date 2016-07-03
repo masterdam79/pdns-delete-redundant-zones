@@ -1,7 +1,23 @@
 #!/bin/bash
 
+ECHOGRAY() {
+  echo -e "\e[1;30m$1\e[0m"
+}
+
+ECHORED() {
+  echo -e "\e[1;31m$1\e[0m"
+}
+
 ECHOGREEN() {
   echo -e "\e[1;32m$1\e[0m"
+}
+
+ECHOYELLOW() {
+  echo -e "\e[1;33m$1\e[0m"
+}
+
+ECHOBLUE() {
+  echo -e "\e[1;34m$1\e[0m"
 }
 
 HOSTNAME=$(hostname -f)
@@ -14,10 +30,26 @@ mysqldump ${DATABASE} > /root/${DATABASE}-${TIMESTAMP}-$0.sql
 
 # Get list of domains on this server.
 DOMAINS=$(mysql powerdns -s -e "SELECT Name FROM domains;")
+# Loop domains
 for DOMAIN in ${DOMAINS}; do
   ECHOGREEN ${DOMAIN}
-  NSRECORDS=$(dig @8.8.8.8 ${DOMAIN} NS | grep ^${DOMAIN} | awk '{print $5}')
-  for NSRECORD in ${NSRECORDS}; do
-    echo ${NSRECORD::-1}
-  done
+  # Query NS records @8.8.8.8 (Google DNS)
+  NSRECORDS=$(dig @8.8.8.8 ${DOMAIN} NS | grep ^${DOMAIN} | awk '{print $5}' | sort)
+  NSRECORDCOUNT=$(dig @8.8.8.8 ${DOMAIN} NS | grep ^${DOMAIN} | wc -l)
+  if [[ ${NSRECORDCOUNT} == "0" ]]; then
+    ECHOYELLOW "This domain appears not to have any NS records?"
+    NOTDELETING=true
+  else
+    for NSRECORD in ${NSRECORDS}; do
+      ECHOBLUE ${NSRECORD::-1}
+      if [[ ${NSRECORD::-1} == ${HOSTNAME} ]]; then
+        NOTDELETING=true
+      fi
+    done
+  fi
+  if [[ ${NOTDELETING} == true ]]; then
+    ECHORED "We're not deleting this zone"
+  else
+    ECHOYELLOW "We're deleting this zone"
+  fi
 done
