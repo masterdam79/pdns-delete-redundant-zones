@@ -66,6 +66,7 @@ for DOMAIN in ${DOMAINS}; do
   if [[ ${NSRECORDCOUNT} == "0" ]]; then
     # If the domain has no NS records, just log to investigate later, do not delete the zone
     ECHOYELLOW "This domain appears not to have any NS records?"
+    echo "${DOMAIN} - This domain appears not to have any NS records?" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
     if [[ "${DELETING}" == "" ]]; then
       NOTDELETING="true"
     fi
