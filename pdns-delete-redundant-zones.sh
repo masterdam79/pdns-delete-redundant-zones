@@ -73,9 +73,6 @@ for DOMAIN in ${DOMAINS}; do
         # If current NS record contains the hostname
         ECHOCYAN "BOOYA"
         NOTDELETING="true"
-      else
-        ECHOCYAN "BOO"
-        NOTDELETING="false"
       fi
     done
   fi
