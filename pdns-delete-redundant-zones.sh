@@ -48,6 +48,8 @@ for DOMAIN in ${DOMAINS}; do
         ECHOGRAY "${NSRECORD::-1} == ${HOSTNAME}"
         # If current NS record contains the hostname
         NOTDELETING="true"
+      else
+        NOTDELETING="false"
       fi
     done
   fi
