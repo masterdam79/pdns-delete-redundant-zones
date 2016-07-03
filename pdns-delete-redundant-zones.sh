@@ -24,6 +24,10 @@ ECHOFUCHSIA() {
   echo -e "\e[1;35m$1\e[0m"
 }
 
+ECHOCYAN() {
+  echo -e "\e[1;36m$1\e[0m"
+}
+
 ECHOSILVER() {
   echo -e "\e[1;38m$1\e[0m"
 }
@@ -73,6 +77,7 @@ for DOMAIN in ${DOMAINS}; do
       fi
     done
   fi
+  ECHOCYAN "${NOTDELETING}"
   if [[ "${NOTDELETING}" == "true" ]]; then
     ECHORED "We're not deleting this zone"
     if [[ ${NSRECORDCOUNT} -eq 0 ]]; then
