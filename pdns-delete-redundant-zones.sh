@@ -20,6 +20,10 @@ ECHOBLUE() {
   echo -e "\e[1;34m$1\e[0m"
 }
 
+ECHOFUCHSIA() {
+  echo -e "\e[1;35m$1\e[0m"
+}
+
 ECHOSILVER() {
   echo -e "\e[1;38m$1\e[0m"
 }
@@ -61,7 +65,7 @@ for DOMAIN in ${DOMAINS}; do
       ECHOBLUE ${NSRECORD::-1}
       echo "${DOMAIN} - ${NSRECORD::-1}" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
       if [[ "${NSRECORD::-1}" == "${HOSTNAME}" ]]; then
-        ECHOSILVER "${NSRECORD::-1} is ${HOSTNAME}"
+        ECHOFUCHSIA "${NSRECORD::-1} is ${HOSTNAME}"
         # If current NS record contains the hostname
         NOTDELETING="true"
       else
