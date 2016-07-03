@@ -32,6 +32,7 @@ mysqldump ${DATABASE} > /root/${DATABASE}-${TIMESTAMP}-$0.sql
 DOMAINS=$(mysql powerdns -s -e "SELECT Name FROM domains;" | egrep -v "^Name|arpa")
 # Loop domains
 for DOMAIN in ${DOMAINS}; do
+  echo ""
   ECHOGREEN ${DOMAIN}
   # Query NS records @8.8.8.8 (Google DNS) and check how many records are returned
   NSRECORDS=$(dig @8.8.8.8 ${DOMAIN} NS | grep ^${DOMAIN} | awk '{print $5}' | sort)
