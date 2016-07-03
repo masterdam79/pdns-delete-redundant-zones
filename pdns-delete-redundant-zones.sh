@@ -39,7 +39,7 @@ for DOMAIN in ${DOMAINS}; do
   if [[ ${NSRECORDCOUNT} == "0" ]]; then
     # If the domain has no NS records, just log to investigate later, do not delete the zone
     ECHOYELLOW "This domain appears not to have any NS records?"
-    NOTDELETING=true
+    NOTDELETING="true"
   else
     # The domain has NS records, loop them
     for NSRECORD in ${NSRECORDS}; do
@@ -47,11 +47,11 @@ for DOMAIN in ${DOMAINS}; do
       if [[ ${NSRECORD::-1} == ${HOSTNAME} ]]; then
         ECHOGRAY "${NSRECORD::-1} == ${HOSTNAME}"
         # If current NS record contains the hostname
-        NOTDELETING=true
+        NOTDELETING="true"
       fi
     done
   fi
-  if [[ ${NOTDELETING} == true ]]; then
+  if [[ ${NOTDELETING} == "true" ]]; then
     ECHORED "We're not deleting this zone"
   else
     ECHOYELLOW "We're deleting this zone"
