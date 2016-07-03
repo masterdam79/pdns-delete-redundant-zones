@@ -59,6 +59,7 @@ for DOMAIN in ${DOMAINS}; do
     # The domain has NS records, loop them
     for NSRECORD in ${NSRECORDS}; do
       ECHOBLUE ${NSRECORD::-1}
+      echo "${DOMAIN} - ${NSRECORD::-1}" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
       if [[ ${NSRECORD::-1} == ${HOSTNAME} ]]; then
         ECHOSILVER "${NSRECORD::-1} == ${HOSTNAME}"
         # If current NS record contains the hostname
