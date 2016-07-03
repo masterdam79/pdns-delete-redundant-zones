@@ -24,3 +24,6 @@ The script is not executable su it needs te be run using the ```bash``` binary
 cd /path/to/repo/
 bash pdns-delete-redundant-zones.sh
 ```
+
+## Output
+Ouyput is done to STDOUT but logging is also done to /root/
