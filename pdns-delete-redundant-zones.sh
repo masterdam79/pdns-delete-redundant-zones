@@ -71,6 +71,7 @@ for DOMAIN in ${DOMAINS}; do
       if [[ "${NSRECORD::-1}" == "${HOSTNAME}" ]]; then
         ECHOFUCHSIA "${NSRECORD::-1} is ${HOSTNAME}"
         # If current NS record contains the hostname
+        ECHOCYAN "BOOYA"
         NOTDELETING="true"
       else
         NOTDELETING="false"
