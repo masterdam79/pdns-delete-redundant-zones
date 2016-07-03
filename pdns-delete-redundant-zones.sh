@@ -28,6 +28,11 @@ HOSTNAME=$(hostname -f)
 DATE=$(date +"%Y-%m-%d")
 TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 DATABASE="powerdns"
+RESOLVER=$1
+
+if [[ -z $1 ]]; then
+  RESOLVER="8.8.8.8"
+fi
 
 # Make backup of the powerdns database
 mysqldump ${DATABASE} > /root/${DATABASE}-${TIMESTAMP}-$0.sql
@@ -44,8 +49,8 @@ for DOMAIN in ${DOMAINS}; do
   echo ""
   ECHOGREEN ${DOMAIN}
   # Query NS records @8.8.8.8 (Google DNS) and check how many records are returned
-  NSRECORDS=$(dig @8.8.8.8 ${DOMAIN} NS | grep ^${DOMAIN} | awk '{print $5}' | sort)
-  NSRECORDCOUNT=$(dig @8.8.8.8 ${DOMAIN} NS | grep ^${DOMAIN} | wc -l)
+  NSRECORDS=$(dig @${RESOLVER} ${DOMAIN} NS | grep ^${DOMAIN} | awk '{print $5}' | sort)
+  NSRECORDCOUNT=$(dig @${RESOLVER} ${DOMAIN} NS | grep ^${DOMAIN} | wc -l)
   if [[ ${NSRECORDCOUNT} == "0" ]]; then
     # If the domain has no NS records, just log to investigate later, do not delete the zone
     ECHOYELLOW "This domain appears not to have any NS records?"
