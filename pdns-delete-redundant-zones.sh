@@ -55,7 +55,6 @@ for DOMAIN in ${DOMAINS}; do
     # If the domain has no NS records, just log to investigate later, do not delete the zone
     ECHOYELLOW "This domain appears not to have any NS records?"
     NOTDELETING="true"
-    echo "${DOMAIN} - not deleted due to no NS records" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
   else
     # The domain has NS records, loop them
     for NSRECORD in ${NSRECORDS}; do
@@ -71,7 +70,11 @@ for DOMAIN in ${DOMAINS}; do
   fi
   if [[ "${NOTDELETING}" == "true" ]]; then
     ECHORED "We're not deleting this zone"
-    echo "${DOMAIN} - not deleted because ${NSRECORD::-1} == ${HOSTNAME}" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
+    if [[ ${NSRECORDCOUNT} -eq 0 ]]; then
+      echo "${DOMAIN} - not deleted due to no NS records" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
+    else
+      echo "${DOMAIN} - not deleted because ${NSRECORD::-1} == ${HOSTNAME}" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
+    fi
   else
     # Get domain ID
     DOMAINID=$(mysql powerdns -s -e "SELECT id FROM domains WHERE name = \"${DOMAIN}\"" | egrep -v "^id")
