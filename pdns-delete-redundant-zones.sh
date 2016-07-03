@@ -37,6 +37,7 @@ DATE=$(date +"%Y-%m-%d")
 TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 DATABASE="powerdns"
 RESOLVER=$1
+DELETING=$2
 
 if [[ -z $1 ]]; then
   RESOLVER="8.8.8.8"
@@ -64,7 +65,9 @@ for DOMAIN in ${DOMAINS}; do
   if [[ ${NSRECORDCOUNT} == "0" ]]; then
     # If the domain has no NS records, just log to investigate later, do not delete the zone
     ECHOYELLOW "This domain appears not to have any NS records?"
-    NOTDELETING="true"
+    if [[ "${DELETING}" == "" ]]; then
+      NOTDELETING="true"
+    fi
   else
     # The domain has NS records, loop them
     for NSRECORD in ${NSRECORDS}; do
