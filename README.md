@@ -20,10 +20,14 @@ Basically logging into the powerdns database should be no more than ```mysql pow
 This script is to be run from the directory where you cloned this repository
 The script is not executable su it needs te be run using the ```bash``` binary
 
+There are two parameters from which the first parameter is required (resolver) and second is a boolean to tell if you want zones which do not have NS records to be automatically deleted
+
 ```bash
 cd /path/to/repo/
-bash pdns-delete-redundant-zones.sh
+bash pdns-delete-redundant-zones.sh 11.22.33.44 y
 ```
 
 ## Output & Logging
 Output is done to STDOUT but logging is also done to /root/
+
+Eventually a .sql script is given in /root/ to run in your own time

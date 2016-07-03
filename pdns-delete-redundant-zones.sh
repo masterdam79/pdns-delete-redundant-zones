@@ -40,7 +40,8 @@ RESOLVER=$1
 DELETING=$2
 
 if [[ -z $1 ]]; then
-  RESOLVER="8.8.8.8"
+  ECHORED "NO PARAMETER GIVEN"
+  exit
 fi
 
 # Make backup of the powerdns database
@@ -76,7 +77,6 @@ for DOMAIN in ${DOMAINS}; do
       if [[ "${NSRECORD::-1}" == "${HOSTNAME}" ]]; then
         ECHOFUCHSIA "${NSRECORD::-1} is ${HOSTNAME}"
         # If current NS record contains the hostname
-        ECHOCYAN "BOOYA"
         NOTDELETING="true"
       fi
     done
@@ -95,8 +95,10 @@ for DOMAIN in ${DOMAINS}; do
     ECHOYELLOW "We're deleting the zone with ID ${DOMAINID} and its records"
     echo "${DOMAIN} - deleted because NS records didn't match local hostname" >> /root/log/${DATABASE}-${TIMESTAMP}-$0.log
     ECHOSILVER "mysql powerdns -e \"DELETE FROM records WHERE domain_id = ${DOMAINID};\""
+    echo "DELETE FROM records WHERE domain_id = ${DOMAINID};" >> /root/${DATABASE}-${TIMESTAMP}-$0-action.sql
     ECHOSILVER "mysql powerdns -e \"DELETE FROM domains WHERE id = ${DOMAINID};\""
-    # Output current records to log
+    echo "DELETE FROM domains WHERE id = ${DOMAINID};" >> /root/${DATABASE}-${TIMESTAMP}-$0-action.sql
+    # Output current records to log for rollback
     grep ${DOMAIN} /root/${DATABASE}-${TIMESTAMP}-$0-skip-extended-insert.sql >> /root/restore/${DOMAIN}-${TIMESTAMP}.sql
   fi
 done
