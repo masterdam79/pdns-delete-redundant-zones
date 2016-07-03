@@ -29,7 +29,7 @@ DATABASE="powerdns"
 mysqldump ${DATABASE} > /root/${DATABASE}-${TIMESTAMP}-$0.sql
 
 # Get list of domains on this server.
-DOMAINS=$(mysql powerdns -s -e "SELECT Name FROM domains;")
+DOMAINS=$(mysql powerdns -s -e "SELECT Name FROM domains;" | egrep -v "^Name|arpa")
 # Loop domains
 for DOMAIN in ${DOMAINS}; do
   ECHOGREEN ${DOMAIN}
@@ -56,6 +56,8 @@ for DOMAIN in ${DOMAINS}; do
   if [[ "${NOTDELETING}" == "true" ]]; then
     ECHORED "We're not deleting this zone"
   else
-    ECHOYELLOW "We're deleting this zone"
+    # Get domain ID
+    DOMAINID=$(mysql powerdns -s -e "SELECT id FROM domains WHERE name = \"${DOMAIN}\"" | egrep -v "^id")
+    ECHOYELLOW "We're deleting this zone with ID ${DOMAINID}"
   fi
 done
