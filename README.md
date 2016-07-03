@@ -25,5 +25,5 @@ cd /path/to/repo/
 bash pdns-delete-redundant-zones.sh
 ```
 
-## Output
-Ouyput is done to STDOUT but logging is also done to /root/
+## Output & Logging
+Output is done to STDOUT but logging is also done to /root/
