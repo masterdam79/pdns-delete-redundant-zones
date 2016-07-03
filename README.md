@@ -14,3 +14,12 @@ This script is built to run under de vollowing circumstances
 This script assumes there is a file ```/root/.my.cnf``` which contains the root credentials for loggin into the database with all privileges.
 
 Basically logging into the powerdns database should be no more than ```mysql powerdns```.
+
+## Usage
+
+This script is to be run from the directory where you cloned this repository
+
+```bash
+cd /path/to/repo/
+sh pdns-delete-redundant-zones.sh
+```
