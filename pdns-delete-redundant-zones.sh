@@ -24,7 +24,6 @@ HOSTNAME=$(hostname -f)
 DATE=$(date +"%Y-%m-%d")
 TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 DATABASE="powerdns"
-LOGPATH="/root/"
 
 # Make backup of the powerdns database
 mysqldump ${DATABASE} > /root/${DATABASE}-${TIMESTAMP}-$0.sql
@@ -65,8 +64,9 @@ for DOMAIN in ${DOMAINS}; do
     DOMAINID=$(mysql powerdns -s -e "SELECT id FROM domains WHERE name = \"${DOMAIN}\"" | egrep -v "^id")
     ECHOYELLOW "We're deleting the zone with ID ${DOMAINID} and its records"
     echo "${DOMAIN} - deleted because NS records didn't match local hostname" >> ${DATABASE}-${TIMESTAMP}-$0.log
-    ECHOGRAY "mysql powerdns -e \"DELETE FROM `records` WHERE `domain_id` = ${DOMAINID};\""
+    ECHOGRAY "mysql powerdns -e \"DELETE FROM records WHERE domain_id = ${DOMAINID};\""
     # Output current records to log
-    grep ${DOMAIN} /root/${DATABASE}-${TIMESTAMP}-$0-skip-extended-insert.sql
+    mkdir -p /root/restore
+    grep ${DOMAIN} /root/${DATABASE}-${TIMESTAMP}-$0-skip-extended-insert.sql >> /root/restore/${DOMAIN}-${TIMESTAMP}.sql
   fi
 done
