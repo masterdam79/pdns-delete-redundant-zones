@@ -51,7 +51,7 @@ for DOMAIN in ${DOMAINS}; do
       fi
     done
   fi
-  if [[ ${NOTDELETING} == "true" ]]; then
+  if [[ "${NOTDELETING}" == "true" ]]; then
     ECHORED "We're not deleting this zone"
   else
     ECHOYELLOW "We're deleting this zone"
