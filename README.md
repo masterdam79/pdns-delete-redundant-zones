@@ -18,8 +18,9 @@ Basically logging into the powerdns database should be no more than ```mysql pow
 ## Usage
 
 This script is to be run from the directory where you cloned this repository
+The script is not executable su it needs te be run using the bash binary
 
 ```bash
 cd /path/to/repo/
-sh pdns-delete-redundant-zones.sh
+bash pdns-delete-redundant-zones.sh
 ```
