@@ -8,3 +8,8 @@ This script is built to run under de vollowing circumstances
 
 * CentOS Linux release 7.2.1511 (Core) x86_64
 * PowerDNS Authoritative Server 3.4.8
+
+## Assumptions
+This script assumes there is a file ```/root/.my.cnf``` which contains the root credentials for loggin into the database with all privileges.
+
+Basically logging into the powerdns database should be no more than ```mysql powerdns```.
